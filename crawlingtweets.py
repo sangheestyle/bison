@@ -5,6 +5,11 @@ q_moto_x = TweetDataStore('moto x')
 q_lg_g2 = TweetDataStore('lg g2')
 q_iphone_5 = TweetDataStore('iphone 5')
 
+
+q_surface = TweetDataStore('surface')
+q_ipad = TweetDataStore('ipad')
+
+
 loop = 1000
 timer = 0
 
@@ -18,6 +23,12 @@ for i in range(loop):
         print "lg g2   : " + q_lg_g2.last_created_at
         q_moto_x.write_file(q_moto_x.get_search_result(100, q_moto_x.get_max_id()))
         print "moto x  : " + q_moto_x.last_created_at
+        
+        
+        q_surface.write_file(q_surface.get_search_result(100, q_surface.get_max_id()))
+        print "surface: " + q_surface.last_created_at
+        q_ipad.write_file(q_ipad.get_search_result(100, q_ipad.get_max_id()))
+        print "ipad " + q_ipad.last_created_at
     else:
         print "=== waiting for 15 min"
         timer = 0
