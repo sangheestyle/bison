@@ -12,7 +12,7 @@ class TweetDataStore:
         self.ACCESS_TOKEN = self.twitter.obtain_access_token()
         # Use the Access Token
         self.twitter = Twython(self.APP_KEY, access_token=self.ACCESS_TOKEN)
-        self.max_id = 0
+        self.most_early_id = 0
         self.last_created_at = ""
         self.query = query
         self.set_last_query_result()
@@ -30,13 +30,13 @@ class TweetDataStore:
         current_path = os.path.abspath(os.curdir)
         os.chdir(folder_path)
 
-        with open('tmp'+ str(self.max_id) + '.txt', 'w') as handle:
+        with open('tmp'+ str(self.most_early_id) + '.txt', 'w') as handle:
             json.dump(content, handle)
 
         os.chdir(current_path)
         handle.close()
 
-    def get_search_result (self, num_tweet , last_id = 0):
+    def get_search_result_backward (self, num_tweet , last_id = 0):
         result = self.twitter.search(q = self.query, count = num_tweet, max_id = last_id)
         for item in result['statuses']:
             self.set_last_max_id(item['id'])
@@ -69,10 +69,10 @@ class TweetDataStore:
             handle.write(str(max_id))
         handle.close()
         os.chdir(current_path)
-        self.max_id = max_id
+        self.most_early_id = max_id
 
     def get_max_id (self):
-        return self.max_id
+        return self.most_early_id
 
     def set_last_created_at (self, created_at):
         created_at_path = "dumps/" + self.query_to_folder_name(self.query)
