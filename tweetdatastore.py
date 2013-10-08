@@ -15,7 +15,7 @@ class TweetDataStore:
         self.most_early_id = 0
         self.last_created_at = ""
         self.query = query
-        self.set_last_query_result()
+        self.set_last_query_status()
 
     def query_to_folder_name(self, query):
         query = query.replace("#", "_sharp_")
@@ -43,18 +43,12 @@ class TweetDataStore:
             self.set_last_created_at(item['created_at'])
         return result
 
-    def set_last_query_result (self):
-        max_id_path = "dumps/" + self.query_to_folder_name(self.query) + "/max_id.txt"
-        created_at_path = "dumps/" + self.query_to_folder_name(self.query) + "/created_at.txt"
+    def set_last_query_status (self):
+        tweet_status_path = "dumps/" + self.query_to_folder_name(self.query) + "/tweet_status.txt"
 
-        if os.path.exists(max_id_path) and os.path.exists(created_at_path):
-            with open(max_id_path, 'r') as handle:
-                self.set_last_max_id(int(handle.readline()))
-                print self.get_max_id()
-            handle.close()
-            with open(created_at_path, 'r') as handle:
-                self.set_last_created_at(handle.readline())
-                print self.last_created_at
+        if os.path.exists(tweet_status_path):
+            with open(tweet_status_path, 'r') as handle:
+                self.set_last_max_id(json.load(handle)['most_early_id'])
             handle.close()
         else:
             self.set_last_max_id(0)
@@ -65,8 +59,8 @@ class TweetDataStore:
             os.makedirs(max_id_path)
         current_path = os.path.abspath(os.curdir)
         os.chdir(max_id_path)
-        with open("max_id.txt", 'w') as handle:
-            handle.write(str(max_id))
+        with open('tweet_status.txt', 'w') as handle:
+            handle.write(json.dumps({'most_early_id': self.most_early_id}))
         handle.close()
         os.chdir(current_path)
         self.most_early_id = max_id
