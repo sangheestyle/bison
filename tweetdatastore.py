@@ -1,7 +1,7 @@
 from twython import Twython
-import time
 import json
 import os
+
 
 class TweetDataStore:
     def __init__(self, query):
@@ -31,17 +31,19 @@ class TweetDataStore:
         current_path = os.path.abspath(os.curdir)
         os.chdir(folder_path)
 
-        with open('tmp'+ str(self.most_early_id) + '.txt', 'w') as handle:
+        with open('tmp' + str(self.most_early_id) + '.txt', 'w') as handle:
             json.dump(content, handle)
 
         os.chdir(current_path)
         handle.close()
 
-    def get_search_result(self, num_tweet, direction, id = 0):
+    def get_search_result(self, num_tweet, direction, id=0):
         if direction == 0:
-            result = self.twitter.search(q = self.query, count = num_tweet, max_id = id)
+            result = self.twitter.search(q=self.query, count=num_tweet,
+                                         max_id=id)
         elif direction == 1:
-            result = self.twitter.search(q = self.query, count = num_tweet, since_id = id)
+            result = self.twitter.search(q=self.query, count=num_tweet,
+                                         since_id=id)
         else:
             return False
 
@@ -52,43 +54,45 @@ class TweetDataStore:
                 self.set_last_created_at(item['created_at'])
         return result
 
-    def set_last_query_status (self):
-        tweet_status_path = "dumps/" + self.query_to_folder_name(self.query) + "/tweet_status.txt"
+    def set_last_query_status(self):
+        tweet_status_path = "dumps/" + self.query_to_folder_name(self.query) +\
+            "/tweet_status.txt"
 
         if os.path.exists(tweet_status_path):
             with open(tweet_status_path, 'r') as handle:
                 last_tweet_status = json.load(handle)
                 self.set_last_created_at(last_tweet_status['last_created_at'])
                 self.set_most_early_id(int(last_tweet_status['most_early_id']))
-                self.set_most_recent_id(int(last_tweet_status['most_recent_id']))
+                self.set_most_recent_id(
+                    int(last_tweet_status['most_recent_id']))
             handle.close()
         else:
             self.set_most_early_id(0)
 
-    def set_most_early_id (self, max_id):
+    def set_most_early_id(self, max_id):
         if max_id < self.most_early_id or self.most_early_id == 0:
             self.most_early_id = max_id
             self.write_status()
 
-    def set_most_recent_id (self, recent_id):
+    def set_most_recent_id(self, recent_id):
         if recent_id > self.most_recent_id or self.most_recent_id == 0:
             self.most_recent_id = recent_id
             self.write_status()
 
-    def get_most_early_id (self):
+    def get_most_early_id(self):
         return self.most_early_id
 
     def get_most_recent_id(self):
         return self.most_recent_id
 
-    def set_last_created_at (self, created_at):
+    def set_last_created_at(self, created_at):
         self.last_created_at = created_at
         self.write_status()
 
     def write_status(self):
-        tweet_status = {'most_early_id' : self.most_early_id,
-                        'most_recent_id' : self.most_recent_id,
-                        'last_created_at' : self.last_created_at}
+        tweet_status = {'most_early_id': self.most_early_id,
+                        'most_recent_id': self.most_recent_id,
+                        'last_created_at': self.last_created_at}
 
         status_path = "dumps/" + self.query_to_folder_name(self.query)
 
@@ -104,10 +108,10 @@ class TweetDataStore:
         os.chdir(current_path)
         handle.close()
 
-    def get_last_created_at (self):
+    def get_last_created_at(self):
         return self.last_created_at
 
-    def show_result (self, query_result):
+    def show_result(self, query_result):
         for item in query_result['statuses']:
             for i in item:
                 print "%s : %s" % (i, item[i])
