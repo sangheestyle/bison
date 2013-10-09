@@ -1,37 +1,32 @@
 from tweetdatastore import TweetDataStore
 import time
 
-q_moto_x = TweetDataStore('moto x')
-q_lg_g2 = TweetDataStore('lg g2')
-q_iphone_5 = TweetDataStore('iphone 5')
+keywords = ['lg g2',
+             'moto x',
+             'iphone 5',
+             'ipad',
+             'surface'
+             ]
+data_source = {name: TweetDataStore(name) for name in keywords}
 
+LOOP_COUNT = 1000
+SLEEP_TIME = 60 * 1
+TIMER = 0
 
-q_surface = TweetDataStore('surface')
-q_ipad = TweetDataStore('ipad')
-
-
-loop = 1000
-timer = 0
-
-for i in range(loop):
-    if timer < 10:
-        timer += 1
-        print "=== begin: " + str(timer)
-        q_iphone_5.write_result(q_iphone_5.get_search_result(100, 0, q_iphone_5.get_max_id()))
-        q_iphone_5.write_result(q_iphone_5.get_search_result(100, 1, q_iphone_5.get_max_id()))
-        print "iphone 5: " + q_iphone_5.last_created_at
-        q_lg_g2.write_result(q_lg_g2.get_search_result(100, 0, q_lg_g2.get_max_id()))
-        print "lg g2   : " + q_lg_g2.last_created_at
-        q_moto_x.write_result(q_moto_x.get_search_result(100, 0, q_moto_x.get_max_id()))
-        print "moto x  : " + q_moto_x.last_created_at
-        
-        
-        q_surface.write_result(q_surface.get_search_result(100, 0, q_surface.get_max_id()))
-        print "surface: " + q_surface.last_created_at
-        q_ipad.write_result(q_ipad.get_search_result(100, 0, q_ipad.get_max_id()))
-        print "ipad " + q_ipad.last_created_at
+for i in range(LOOP_COUNT):
+    if TIMER < 10:
+        TIMER += 1
+        print "=== BEGIN: " + str(TIMER)
+        for keyword in data_source:
+            current_instance = data_source[keyword]
+            current_instance.write_result(
+                current_instance.get_search_result(100, 0, current_instance.get_max_id()))
+            print "* <<: " + keyword + ": " + current_instance.last_created_at
+            current_instance.write_result(
+                current_instance.get_search_result(100, 1, current_instance.get_most_recent_id()))
+            print "* >>: " + keyword + ": " + current_instance.last_created_at
     else:
-        print "=== waiting for 15 min"
-        timer = 0
-        time.sleep(60 * 15)
-        print "=== finish waiting then will restart"
+        print "=== WAIT: waiting for " + str(SLEEP_TIME) + " sec"
+        TIMER = 0
+        time.sleep(SLEEP_TIME)
+        print "=== WAIT: finish waiting then will restart"
