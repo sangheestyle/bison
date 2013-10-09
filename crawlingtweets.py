@@ -17,17 +17,17 @@ for i in range(loop):
     if timer < 10:
         timer += 1
         print "=== begin: " + str(timer)
-        q_iphone_5.write_file(q_iphone_5.get_search_result_backward(100, q_iphone_5.get_max_id()))
+        q_iphone_5.write_result(q_iphone_5.get_search_result_backward(100, q_iphone_5.get_max_id()))
         print "iphone 5: " + q_iphone_5.last_created_at
-        q_lg_g2.write_file(q_lg_g2.get_search_result_backward(100, q_lg_g2.get_max_id()))
+        q_lg_g2.write_result(q_lg_g2.get_search_result_backward(100, q_lg_g2.get_max_id()))
         print "lg g2   : " + q_lg_g2.last_created_at
-        q_moto_x.write_file(q_moto_x.get_search_result_backward(100, q_moto_x.get_max_id()))
+        q_moto_x.write_result(q_moto_x.get_search_result_backward(100, q_moto_x.get_max_id()))
         print "moto x  : " + q_moto_x.last_created_at
         
         
-        q_surface.write_file(q_surface.get_search_result_backward(100, q_surface.get_max_id()))
+        q_surface.write_result(q_surface.get_search_result_backward(100, q_surface.get_max_id()))
         print "surface: " + q_surface.last_created_at
-        q_ipad.write_file(q_ipad.get_search_result_backward(100, q_ipad.get_max_id()))
+        q_ipad.write_result(q_ipad.get_search_result_backward(100, q_ipad.get_max_id()))
         print "ipad " + q_ipad.last_created_at
     else:
         print "=== waiting for 15 min"

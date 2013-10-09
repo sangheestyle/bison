@@ -22,7 +22,7 @@ class TweetDataStore:
         query = query.replace(" ", "_")
         return query
 
-    def write_file (self, content):
+    def write_result(self, content):
         folder_path = 'dumps/' + self.query_to_folder_name(self.query)
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
