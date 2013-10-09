@@ -13,6 +13,7 @@ class TweetDataStore:
         # Use the Access Token
         self.twitter = Twython(self.APP_KEY, access_token=self.ACCESS_TOKEN)
         self.most_early_id = 0
+        self.most_recent_id = 0
         self.last_created_at = ""
         self.query = query
         self.set_last_query_status()
@@ -38,9 +39,19 @@ class TweetDataStore:
 
     def get_search_result_backward (self, num_tweet , last_id = 0):
         result = self.twitter.search(q = self.query, count = num_tweet, max_id = last_id)
+        self.set_most_recent_id(result['statuses'][0]['id'])
         for item in result['statuses']:
             self.set_last_max_id(item['id'])
             self.set_last_created_at(item['created_at'])
+        return result
+
+    def get_search_result_forward (self, num_tweet , recent_id = 0):
+        result = self.twitter.search(q = self.query, count = num_tweet, since_id = recent_id)
+        if len(result['statuses']) != 0:
+            self.set_most_recent_id(result['statuses'][0]['id'])
+            for item in result['statuses']:
+                self.set_last_max_id(item['id'])
+                self.set_last_created_at(item['created_at'])
         return result
 
     def set_last_query_status (self):
@@ -51,31 +62,51 @@ class TweetDataStore:
                 last_tweet_status = json.load(handle)
                 self.set_last_created_at(last_tweet_status['last_created_at'])
                 self.set_last_max_id(int(last_tweet_status['most_early_id']))
+                self.set_most_recent_id(int(last_tweet_status['most_recent_id']))
             handle.close()
         else:
             self.set_last_max_id(0)
 
     def set_last_max_id (self, max_id):
-        self.most_early_id = max_id
-        self.write_status()
+        if max_id < self.most_early_id or self.most_early_id == 0:
+            self.most_early_id = max_id
+            self.write_status()
+
+        print "most early id: " + str(self.most_early_id)
+
+    def set_most_recent_id (self, recent_id):
+        if recent_id > self.most_recent_id or self.most_recent_id == 0:
+            self.most_recent_id = recent_id
+            self.write_status()
+
+        print "most recent_id: " + str(self.most_recent_id)
 
     def get_max_id (self):
         return self.most_early_id
+
+    def get_most_recent_id(self):
+        return self.most_recent_id
 
     def set_last_created_at (self, created_at):
         self.last_created_at = created_at
         self.write_status()
 
     def write_status(self):
+        tweet_status = {'most_early_id' : self.most_early_id,
+                        'most_recent_id' : self.most_recent_id,
+                        'last_created_at' : self.last_created_at}
+
         status_path = "dumps/" + self.query_to_folder_name(self.query)
+
         if not os.path.exists(status_path):
             os.makedirs(status_path)
 
         current_path = os.path.abspath(os.curdir)
         os.chdir(status_path)
+
         with open("tweet_status.txt", 'w') as handle:
-            handle.write(json.dumps({'most_early_id' : self.most_early_id,
-                                     'last_created_at' : self.last_created_at}))
+            handle.write(json.dumps(tweet_status))
+
         os.chdir(current_path)
         handle.close()
 
