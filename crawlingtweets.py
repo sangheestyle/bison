@@ -5,7 +5,10 @@ keywords = ['lg g2',
              'moto x',
              'iphone 5',
              'ipad',
-             'surface'
+             'surface',
+             'kindlefire',
+             'surface2',
+             'nexus10'
              ]
 data_source = {name: TweetDataStore(name) for name in keywords}
 
