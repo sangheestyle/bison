@@ -19,7 +19,7 @@ class TweetDataStore:
         self.set_last_query_status()
 
     def query_to_folder_name(self, query):
-        query = query.replace("#", "_sharp_")
+        query = query.replace("#", "_hash_")
         query = query.replace(" ", "_")
         return query
 
