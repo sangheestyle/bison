@@ -37,16 +37,14 @@ class TweetDataStore:
         os.chdir(current_path)
         handle.close()
 
-    def get_search_result_backward (self, num_tweet , last_id = 0):
-        result = self.twitter.search(q = self.query, count = num_tweet, max_id = last_id)
-        self.set_most_recent_id(result['statuses'][0]['id'])
-        for item in result['statuses']:
-            self.set_last_max_id(item['id'])
-            self.set_last_created_at(item['created_at'])
-        return result
+    def get_search_result(self, num_tweet, direction, id = 0):
+        if direction == 0:
+            result = self.twitter.search(q = self.query, count = num_tweet, max_id = id)
+        elif direction == 1:
+            result = self.twitter.search(q = self.query, count = num_tweet, since_id = id)
+        else:
+            return False
 
-    def get_search_result_forward (self, num_tweet , recent_id = 0):
-        result = self.twitter.search(q = self.query, count = num_tweet, since_id = recent_id)
         if len(result['statuses']) != 0:
             self.set_most_recent_id(result['statuses'][0]['id'])
             for item in result['statuses']:
