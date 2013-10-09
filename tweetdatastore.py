@@ -54,15 +54,15 @@ class TweetDataStore:
             self.set_last_max_id(0)
 
     def set_last_max_id (self, max_id):
-        self.write_status()
         self.most_early_id = max_id
+        self.write_status()
 
     def get_max_id (self):
         return self.most_early_id
 
     def set_last_created_at (self, created_at):
-        self.write_status()
         self.last_created_at = created_at
+        self.write_status()
 
     def write_status(self):
         status_path = "dumps/" + self.query_to_folder_name(self.query)
