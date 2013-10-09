@@ -13,7 +13,7 @@ keywords = ['lg g2',
 data_source = {name: TweetDataStore(name) for name in keywords}
 
 LOOP_COUNT = 1000
-SLEEP_TIME = 60 * 1
+SLEEP_TIME = 60 * 15
 TIMER = 0
 
 for i in range(LOOP_COUNT):
