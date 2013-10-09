@@ -48,7 +48,7 @@ class TweetDataStore:
         if len(result['statuses']) != 0:
             self.set_most_recent_id(result['statuses'][0]['id'])
             for item in result['statuses']:
-                self.set_last_max_id(item['id'])
+                self.set_most_early_id(item['id'])
                 self.set_last_created_at(item['created_at'])
         return result
 
@@ -59,13 +59,13 @@ class TweetDataStore:
             with open(tweet_status_path, 'r') as handle:
                 last_tweet_status = json.load(handle)
                 self.set_last_created_at(last_tweet_status['last_created_at'])
-                self.set_last_max_id(int(last_tweet_status['most_early_id']))
+                self.set_most_early_id(int(last_tweet_status['most_early_id']))
                 self.set_most_recent_id(int(last_tweet_status['most_recent_id']))
             handle.close()
         else:
-            self.set_last_max_id(0)
+            self.set_most_early_id(0)
 
-    def set_last_max_id (self, max_id):
+    def set_most_early_id (self, max_id):
         if max_id < self.most_early_id or self.most_early_id == 0:
             self.most_early_id = max_id
             self.write_status()
@@ -79,7 +79,7 @@ class TweetDataStore:
 
         print "most recent_id: " + str(self.most_recent_id)
 
-    def get_max_id (self):
+    def get_most_early_id (self):
         return self.most_early_id
 
     def get_most_recent_id(self):
