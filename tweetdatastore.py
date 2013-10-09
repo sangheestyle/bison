@@ -70,14 +70,10 @@ class TweetDataStore:
             self.most_early_id = max_id
             self.write_status()
 
-        print "most early id: " + str(self.most_early_id)
-
     def set_most_recent_id (self, recent_id):
         if recent_id > self.most_recent_id or self.most_recent_id == 0:
             self.most_recent_id = recent_id
             self.write_status()
-
-        print "most recent_id: " + str(self.most_recent_id)
 
     def get_most_early_id (self):
         return self.most_early_id
