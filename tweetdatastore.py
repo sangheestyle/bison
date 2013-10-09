@@ -48,7 +48,9 @@ class TweetDataStore:
 
         if os.path.exists(tweet_status_path):
             with open(tweet_status_path, 'r') as handle:
-                self.set_last_max_id(json.load(handle)['most_early_id'])
+                last_tweet_status = json.load(handle)
+                self.set_last_created_at(last_tweet_status['last_created_at'])
+                self.set_last_max_id(int(last_tweet_status['most_early_id']))
             handle.close()
         else:
             self.set_last_max_id(0)
