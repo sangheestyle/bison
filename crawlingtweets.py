@@ -4,6 +4,7 @@ import time
 keywords = ['lg g2',
             'moto x',
             'iphone 5',
+            'iphone 5s',
             'ipad',
             'surface',
             'kindlefire',
