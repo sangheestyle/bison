@@ -1,6 +1,7 @@
 from twython import Twython
 import json
 import os
+import hashlib
 
 
 class TweetDataStore:
@@ -30,8 +31,10 @@ class TweetDataStore:
 
         current_path = os.path.abspath(os.curdir)
         os.chdir(folder_path)
+        m = hashlib.sha1()
+        m.update(str(content))
 
-        with open('tmp' + str(self.most_early_id) + '.txt', 'w') as handle:
+        with open('tmp' + m.hexdigest() + '.txt', 'w') as handle:
             json.dump(content, handle)
 
         os.chdir(current_path)
