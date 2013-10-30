@@ -41,6 +41,8 @@ class TweetDataStore:
         handle.close()
 
     def get_search_result(self, num_tweet, direction, id=0):
+        print "#######id: " + str(id)
+        print "####direc: " + str(direction)
         if direction == 0:
             result = self.twitter.search(q=self.query, count=num_tweet,
                                          max_id=id)
@@ -53,9 +55,16 @@ class TweetDataStore:
         if len(result['statuses']) != 0:
             self.set_most_recent_id(result['statuses'][0]['id'])
             for item in result['statuses']:
-                self.set_most_early_id(item['id'])
+                if direction == 0:
+                    self.set_most_early_id(item['id'])
+                elif direction == 1:
+                    self.set_most_recent_id(item['id'])
+                else:
+                    return False
                 self.set_last_created_at(item['created_at'])
-        return result
+            return result
+        else:
+            return False
 
     def set_last_query_status(self):
         tweet_status_path = "dumps/" + self.query_to_folder_name(self.query) +\
@@ -68,6 +77,8 @@ class TweetDataStore:
                 self.set_most_early_id(int(last_tweet_status['most_early_id']))
                 self.set_most_recent_id(
                     int(last_tweet_status['most_recent_id']))
+                print "-----------early:" + str(self.get_most_early_id())
+                print "-----------recent:" + str(self.get_most_recent_id())
             handle.close()
         else:
             self.set_most_early_id(0)

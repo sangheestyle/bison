@@ -23,14 +23,23 @@ for i in range(LOOP_COUNT):
         print "=== BEGIN: " + str(TIMER)
         for keyword in data_source:
             current_instance = data_source[keyword]
-            current_instance.write_result(
-                current_instance.get_search_result(
-                    100, 0, current_instance.get_most_early_id()))
-            print "* <<: " + keyword + ": " + current_instance.last_created_at
-            current_instance.write_result(
-                current_instance.get_search_result(
-                    100, 1, current_instance.get_most_recent_id()))
-            print "* >>: " + keyword + ": " + current_instance.last_created_at
+            result_backward = current_instance.get_search_result(100,
+                                                                 0,
+                                                                 current_instance.get_most_early_id())
+            if result_backward != False:
+                current_instance.write_result(result_backward)
+                print "* <<: " + keyword + ": " + current_instance.last_created_at
+            else:
+                print "* <<: Empty result"
+
+            result_forward = current_instance.get_search_result(100,
+                                                                1,
+                                                                current_instance.get_most_recent_id())
+            if result_forward != False:
+                current_instance.write_result(result_forward)
+                print "* >>: " + keyword + ": " + current_instance.last_created_at
+            else:
+                print "* >>: Empty result"
     else:
         print "=== WAIT: waiting for " + str(SLEEP_TIME) + " sec"
         TIMER = 0
