@@ -32,14 +32,6 @@ for i in range(LOOP_COUNT):
             else:
                 print "* <<: Empty result"
 
-            result_forward = current_instance.get_search_result(100,
-                                                                1,
-                                                                current_instance.get_most_recent_id())
-            if result_forward != False:
-                current_instance.write_result(result_forward)
-                print "* >>: " + keyword + ": " + current_instance.last_created_at
-            else:
-                print "* >>: Empty result"
     else:
         print "=== WAIT: waiting for " + str(SLEEP_TIME) + " sec"
         TIMER = 0
