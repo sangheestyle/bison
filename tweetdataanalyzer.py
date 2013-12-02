@@ -8,25 +8,21 @@ class TweetDataAnalyzer:
         pass
 
     def load_json_file(self, file_path):
-        with open(file_path, 'r') as handle:
-            loaded_data = json.load(handle)
-
-        handle.close()
-        return loaded_data
+        try:
+            file = open(file_path)
+            contents = json.load(file)
+            file.close()
+            data_frame = pd.DataFrame(contents['statuses'])
+            return data_frame
+        except Exception, e:
+            print "Failed to make DataFrame: ", e
 
     def load_json_files(self, root):
-        frame = pd.DataFrame()
+        data_frame = pd.DataFrame()
         for root, dirnames, filenames in os.walk(root):
             for filename in filenames:
                 if not filename.endswith('.txt'):
                     continue
-                try:
-                    path = os.path.join(root, filename)
-                    file = open(path)
-                    contents = json.load(file)
-                    file.close()
-                    frame = frame.append(pd.DataFrame(contents['statuses']))
-                except Exception, e:
-                    print "Failed to make DataFrame: ", e
-
-        return frame
+                path = os.path.join(root, filename)
+                data_frame = data_frame.append(self.load_json_file(path))
+        return data_frame
