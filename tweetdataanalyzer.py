@@ -12,8 +12,9 @@ class TweetDataAnalyzer:
             file = open(file_path)
             contents = json.load(file)
             file.close()
-            data_frame = pd.DataFrame(contents['statuses'], columns=fields)
-            return data_frame
+            data_frame = pd.DataFrame(contents['statuses'])
+            selected_field = pd.DataFrame(data_frame, columns=fields)
+            return selected_field
         except Exception, e:
             print "Failed to make DataFrame: ", e
 
