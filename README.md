@@ -4,9 +4,11 @@ Homework for HCC Big Data Fall semester 2013
 
 Goal
 
-* crawling data from tweet server via tweet API (based on Twython)
-* TBD: loading data from saved files including json dump (based on Panda)
-* TBD: viaulizing data
+* crawling data from tweet server via tweet API (Twython)
+* loading data from text files including json dump and save it to tsv (Pandas)
+* loading dataframe from json or tsv (Pandas)
+* TBD: giving some simple ways to analyze tweet data with tweet data fields (Pandas)
+* TBD: viaulizing data (Numpy, Google Chart)
  
 Data Center
 
