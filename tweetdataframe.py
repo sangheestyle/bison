@@ -69,6 +69,20 @@ class TweetDataframe:
         self.df.to_csv(file_name, index=index, sep=sep, encoding=encoding)
 
 if __name__ == "__main__":
-    tdf = TweetDataframe('dumps/moto_x')
-    print tdf.df
-    tdf.to_csv('moto_x.csv')
+    from datetime import datetime
+
+    device_names = ['moto_x',
+                    'lg_g2',
+                    'nexus_5'
+                   ]
+
+    def generate_csv(device_name):
+        print "=== BEGIN: " + device_name + " " + str(datetime.now())
+        x = TweetDataframe("dumps/" + device_name)
+        print x.df
+        print "=== Procesing CSV" + " " + str(datetime.now())
+        x.to_csv(device_name + '.csv')
+        print "=== END: " + device_name + " " + str(datetime.now())
+
+    for device_name in device_names:
+        generate_csv(device_name)
