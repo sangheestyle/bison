@@ -1,4 +1,4 @@
-from tweetdataanalyzer import TweetDataAnalyzer
+from tweetdataframe import TweetDataAnalyzer
 import pandas as pd
 
 x = TweetDataAnalyzer()
