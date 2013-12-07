@@ -65,6 +65,10 @@ class TweetDataframe:
         self.from_json_files()
         self.move_user_fields_to_columns()
 
+    def to_csv(self, file_name, index=False, sep='\t', encoding='utf=8'):
+        self.df.to_csv(file_name, index=index, sep=sep, encoding=encoding)
+
 if __name__ == "__main__":
     tdf = TweetDataframe('dumps/moto_x')
     print tdf.df
+    tdf.to_csv('moto_x.csv')
