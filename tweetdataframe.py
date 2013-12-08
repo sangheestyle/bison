@@ -84,6 +84,7 @@ class TweetDataframe:
         self.from_files()
         if self.input_type == None:
             self.move_user_fields_to_columns()
+        self.df = self.df.drop_duplicates('id')
 
     def to_csv(self, file_name, index=False, sep='\t', encoding='utf=8'):
         self.df.to_csv(file_name, index=index, sep=sep, encoding=encoding)
