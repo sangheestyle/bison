@@ -89,6 +89,9 @@ class TweetDataframe:
     def to_csv(self, file_name, index=False, sep='\t', encoding='utf=8'):
         self.df.to_csv(file_name, index=index, sep=sep, encoding=encoding)
 
+    def to_json(self, file_name, orient='split'):
+        self.df.to_json(file_name, orient=orient)
+
 if __name__ == "__main__":
     from datetime import datetime
     DUMPS_PATH = "dumps/"
@@ -99,13 +102,19 @@ if __name__ == "__main__":
                     'nexus_5'
                    ]
 
-    def generate_csv(device_name):
+    def generate_file(device_name, type):
         print "=== BEGIN: " + device_name + " " + str(datetime.now())
         x = TweetDataframe(DUMPS_PATH + device_name)
         print x.df
-        print "=== Procesing CSV" + " " + str(datetime.now())
-        x.to_csv(device_name + '.csv')
+        print "=== Writing file" + " " + str(datetime.now())
+        if type =='json':
+            x.to_json(device_name + '.json')
+        elif type == 'csv':
+            x.to_csv(device_name + '.csv')
         print "=== END: " + device_name + " " + str(datetime.now())
+
+    for device_name in device_names:
+        generate_file(device_name, type='json')
 
     dfs = {device_name: TweetDataframe(SAMPLE_CSV_PATH + device_name + ".csv")
            for device_name in device_names}
