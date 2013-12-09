@@ -16,8 +16,15 @@ class Analyzer(TweetDataframe):
         time_count = self.df.created_at.groupby(self.df.created_at).count()
         return time_count.resample(freq, how)
 
-    def week_day_trend(self):
-        pass
+    def weekday_trend(self):
+        df = self.df
+        df['weeknumber'] = df['created_at'].map(lambda x: x.isocalendar()[1])
+        df['weekday'] = df['created_at'].map(lambda x: x.isocalendar()[2])
+        week_df = pd.DataFrame(self.df.weekday)
+        week_df['weeknumber'] = self.df.weeknumber
+        weekday_count = week_df.groupby(['weekday', 'weeknumber']).count()
+        weekday_count = weekday_count.weeknumber.unstack('weeknumber')
+        print weekday_count.to_records()
 
     def top_n_influencer(self, n):
         pass
