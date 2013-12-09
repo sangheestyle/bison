@@ -19,3 +19,13 @@ Reference
 
 * Twitter REST API v1.1 Resources: https://dev.twitter.com/docs/api/1.1
 * Twython (Python implementation for Using Twitter REST API): https://github.com/ryanmcgrath/twython
+
+Demo
+
+Following demo visualizations allow you to know what this programe does eventually. It takes about 1 min to load graph because they use Google Chart for visualization.
+
+* Scene 2: Geo Chart - http://goo.gl/vyi1Gy
+* Scene 3: Hourly Trends with outliers - http://goo.gl/L26mmP
+* Scene 3: Hourly Trends without outliers - http://goo.gl/1yaekZ
+* Scene 4: Weekly Tweet Trends - http://goo.gl/Y28HrQ
+* Scene X1: Official Mobile Apps - http://goo.gl/OzYu0J
