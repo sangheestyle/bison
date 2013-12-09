@@ -21,11 +21,18 @@ class Analyzer(TweetDataframe):
     def top_n_influencer(self, n):
         pass
 
-    def top_n_source(self, n):
+    def top_n_source(self, n=None):
         df_source = self.df.source
         source_counts = df_source.value_counts()[:n]
         n_source = self.text_only_source(source_counts)
         return pd.DataFrame(n_source, columns=['source', 'count'])
+
+    def top_official_twitter_apps(self):
+        sources = self.top_n_source()
+        platforms = sources[sources.source.str.contains('Twitter for')]
+        total_count = platforms['count'].sum()
+        platforms['percent'] = platforms['count'] * 100 / total_count
+        return platforms
 
     def text_only_source(self, series):
         refined_source = []
@@ -50,6 +57,4 @@ class Analyzer(TweetDataframe):
 if __name__ == "__main__":
     SAMPLE_CSV_PATH = "sample/csv/moto_x.csv"
     x = Analyzer(SAMPLE_CSV_PATH)
-    #print x.df
-    x_tns = x.top_n_source(10)
-    print x_tns
+    print x.top_official_twitter_apps()
