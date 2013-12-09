@@ -56,5 +56,6 @@ class Analyzer(TweetDataframe):
 
 if __name__ == "__main__":
     SAMPLE_CSV_PATH = "sample/csv/moto_x.csv"
-    x = Analyzer(SAMPLE_CSV_PATH)
+    SAMPLE_JSON_PATH = "sample/json/moto_x.json"
+    x = Analyzer(SAMPLE_JSON_PATH)
     print x.top_official_twitter_apps()

@@ -24,6 +24,8 @@ class TweetDataframe:
                                 ]
         if os.path.isfile(path) and path.endswith('.csv'):
             input_type = 'csv'
+        elif os.path.isfile(path) and path.endswith('.json'):
+            input_type = 'json'
         else:
             input_type = None
 
@@ -34,13 +36,19 @@ class TweetDataframe:
         self.df = pd.DataFrame()
         self.set_formatted_dataframe()
 
-    def from_json(self, file_path):
+    def from_raw_json(self, file_path):
         try:
             file = open(file_path)
             contents = json.load(file)
             file.close()
             statuses_df = pd.DataFrame(contents['statuses'])
             return pd.DataFrame(statuses_df, columns=self.tweet_fields)
+        except Exception, e:
+            print "Failed to make DataFrame: ", e
+
+    def from_json(self, file_path):
+        try:
+            return pd.read_json(file_path, orient='split')
         except Exception, e:
             print "Failed to make DataFrame: ", e
 
@@ -53,7 +61,7 @@ class TweetDataframe:
 
     def from_files(self):
         if os.path.isfile(self.path):
-            if self.path.endswith('.txt'):
+            if self.path.endswith('.json'):
                 self.df = self.df.append(self.from_json(self.path))
             if self.path.endswith('.csv'):
                 self.df = self.df.append(self.from_csv(self.path))
@@ -62,7 +70,7 @@ class TweetDataframe:
                 for file_name in file_names:
                     path = os.path.join(root, file_name)
                     if file_name.endswith('.txt'):
-                        self.df = self.df.append(self.from_json(path))
+                        self.df = self.df.append(self.from_raw_json(path))
                     if file_name.endswith('.csv'):
                         self.df = self.df.append(self.from_csv(path))
 
