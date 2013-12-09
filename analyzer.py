@@ -12,8 +12,9 @@ class Analyzer(TweetDataframe):
     def location(self):
         pass
 
-    def time_trend(self):
-        pass
+    def time_trend(self, freq='H', how='sum'):
+        time_count = self.df.created_at.groupby(self.df.created_at).count()
+        return time_count.resample(freq, how)
 
     def week_day_trend(self):
         pass
